@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SimpleApp</string>
+    <string name="search_hint">책 이름을 검색하세요</string>
+    <string name="error_network">네트워크 오류</string>
+</resources>

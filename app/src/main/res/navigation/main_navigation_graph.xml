@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation_graph"
+    app:startDestination="@id/searchFragment">
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="kim.uno.simpleapp.ui.search.SearchFragment"
+        android:label="searchFragment"
+        tools:layout="@layout/search_fragment">
+
+        <action
+            android:id="@+id/documentDetail"
+            app:destination="@id/documentFragment">
+
+            <argument
+                android:name="document"
+                app:argType="kim.uno.simpleapp.data.dto.Document" />
+            <argument
+                android:name="index"
+                app:argType="integer" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/documentFragment"
+        android:name="kim.uno.simpleapp.ui.document.DocumentFragment"
+        android:label="documentFragment"
+        tools:layout="@layout/document_fragment">
+        <argument
+            android:name="document"
+            app:argType="kim.uno.simpleapp.data.dto.Document" />
+        <argument
+            android:name="index"
+            app:argType="integer" />
+    </fragment>
+
+</navigation>
