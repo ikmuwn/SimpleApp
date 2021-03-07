@@ -1,5 +1,4 @@
 <transitionSet>
-    <changeImageTransform />
-    <changeBounds />
+    <autoTransition />
     <arcMotion />
 </transitionSet>

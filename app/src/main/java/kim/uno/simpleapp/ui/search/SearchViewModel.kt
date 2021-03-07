@@ -1,5 +1,6 @@
 package kim.uno.simpleapp.ui.search
 
+import android.view.View
 import androidx.annotation.VisibleForTesting
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.*
@@ -94,4 +95,12 @@ class SearchViewModel @Inject constructor(private val dataRepository: DataReposi
         searchBook(query = query.value)
     }
 
+    fun isFavorite(view: View, isbn: String) {
+        viewModelScope.launch {
+            dataRepository.isFavorite(isbn).collect {
+                if (it is Result.Success)
+                    view.isSelected = it.data == true
+            }
+        }
+    }
 }
