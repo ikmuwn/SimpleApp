@@ -11,8 +11,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kim.uno.simpleapp.databinding.DocumentFragmentBinding
 import kim.uno.simpleapp.ui.BaseFragment
 import kim.uno.simpleapp.util.GlideListener
-import kim.uno.simpleapp.util.observe
-import kim.uno.simpleapp.util.visible
 
 @AndroidEntryPoint
 class DocumentFragment : BaseFragment() {
@@ -25,6 +23,7 @@ class DocumentFragment : BaseFragment() {
         binding = DocumentFragmentBinding.inflate(inflater)
         val document = navArgs.document
         binding.viewModel = documentViewModel.apply { setup(document) }
+        binding.lifecycleOwner = this
         binding.back.setOnClickListener { it.findNavController().popBackStack() }
         binding.favorite.setOnClickListener { documentViewModel.toggleFavorite() }
 
@@ -34,9 +33,6 @@ class DocumentFragment : BaseFragment() {
                 startPostponedEnterTransition()
             })
             .into(binding.image)
-
-        observe(documentViewModel.favorite) { binding.favorite.isSelected = it }
-        observe(documentViewModel.progress) { binding.progress.visible = it }
 
         installTransition()
         postponeEnterTransition()

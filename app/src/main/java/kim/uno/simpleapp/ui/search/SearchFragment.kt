@@ -30,16 +30,21 @@ class SearchFragment : BaseFragment() {
     override fun onCreateViewOnce(inflater: LayoutInflater): View {
         binding = SearchFragmentBinding.inflate(inflater)
         binding.viewModel = searchViewModel
+        binding.lifecycleOwner = this
         binding.refreshLayout.setOnRefreshListener { searchViewModel.refresh() }
-        binding.recyclerView.viewTreeObserver.addOnPreDrawListener(preDrawListener)
-        binding.recyclerView.adapter = SearchAdapter {
-            if (it == binding.recyclerView.adapter!!.itemCount - 10)
-                searchViewModel.loadMore()
+        binding.recyclerView.apply {
+            viewTreeObserver.addOnPreDrawListener(preDrawListener)
+            adapter = SearchAdapter(binder = {
+                if (it == binding.recyclerView.adapter!!.itemCount - 10)
+                    searchViewModel.loadMore()
+            }, favorite = searchViewModel::isFavorite)
         }
-        binding.search.setOnEditorAction { it.hideKeyboard() }
-        binding.search.requestFocus()
 
-        observe(searchViewModel.progress) { binding.refreshLayout.isRefreshing = it }
+        binding.search.apply {
+            setOnEditorAction { it.hideKeyboard() }
+            requestFocus()
+        }
+
         observe(searchViewModel.error) { if (it) toast(R.string.error_network) }
 
         installTransition()

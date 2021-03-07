@@ -13,6 +13,7 @@ import androidx.core.text.PrecomputedTextCompat
 import androidx.core.widget.TextViewCompat
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 
 fun View.snackbar(text: String, length: Int = Snackbar.LENGTH_LONG) {
@@ -42,6 +43,11 @@ fun Fragment.toast(text: Int, length: Int = Toast.LENGTH_SHORT) {
 @BindingAdapter("visibleByText")
 fun viewVisibleByText(view: View, string: String?) {
     view.visible = !string.isNullOrBlank()
+}
+
+@BindingAdapter("isVisible")
+fun isVisible(view: View, visible: Boolean) {
+    view.visible = visible
 }
 
 var View.visible: Boolean
@@ -98,4 +104,14 @@ fun EditText.setOnEditorAction(unit: (EditText) -> Unit) {
         } else
             false
     }
+}
+
+@BindingAdapter("isSelected")
+fun isSelected(view: View, isSelected: Boolean) {
+    view.isSelected = isSelected
+}
+
+@BindingAdapter("isRefreshing")
+fun isRefreshing(view: SwipeRefreshLayout, isRefreshing: Boolean) {
+    view.isRefreshing = isRefreshing
 }

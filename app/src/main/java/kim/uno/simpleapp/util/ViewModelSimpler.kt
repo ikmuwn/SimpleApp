@@ -20,4 +20,3 @@ fun items(recyclerView: RecyclerView, items: ObservableArrayList<*>) {
             it.addAll(items = items)
         }
 }
-
