@@ -6,8 +6,9 @@ import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kim.uno.simpleapp.data.DataRepository
-import kim.uno.simpleapp.data.Result
 import kim.uno.simpleapp.data.dto.Document
+import kim.uno.simpleapp.util.Paging
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
@@ -17,90 +18,75 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val dataRepository: DataRepository) :
     ViewModel() {
 
-    val items by lazy {
-        viewModelScope.launch {
-            query.asFlow()
-                .debounce(500L)
-                .collect {
-                    if (it != acceptQuery)
-                        searchBook(query = it, page = 1)
-                }
-        }
+    private val _progress = MutableLiveData<Boolean>()
+    val progress: LiveData<Boolean> = _progress
 
-        ObservableArrayList<Document>()
+    private val _error = MutableLiveData<Boolean>()
+    val error: LiveData<Boolean> = _error
+
+    private val paging = Paging { searchBook(query.value) }
+
+    val items = ObservableArrayList<Document>()
+    val query by lazy {
+        MutableLiveData<String?>().also {
+            viewModelScope.launch {
+                it.asFlow()
+                    .debounce(500L)
+                    .collect {
+                        if (it != _query) {
+                            refresh()
+                            _query = it
+                        }
+                    }
+            }
+        }
     }
 
-    val query by lazy { MutableLiveData<String?>() }
-
-    private var acceptQuery: String? = null
-    private var requestPage = 0
-    private var acceptPage = 0
-
-    private val _progress by lazy { MutableLiveData<Boolean>() }
-    val progress: LiveData<Boolean>
-        get() = _progress
-
-    private val _error by lazy { MutableLiveData<Boolean>() }
-    val error: LiveData<Boolean>
-        get() = _error
+    private var _query: String? = null
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun searchBook(query: String?, page: Int = acceptPage + 1) {
+    fun searchBook(query: String?) {
         if (query.isNullOrBlank()) {
             _progress.value = false
-            items.clear()
             return
-        } else if (query == acceptQuery)
-            if (requestPage == page || (acceptPage == page && page != 1)) {
-                _progress.value = false
-                return
-            }
-        requestPage = page
-        acceptQuery = query
+        }
 
         viewModelScope.launch {
-            if (requestPage == 1) {
-                items.clear()
-                dataRepository.clearFavorite().collect { }
-            }
+            _progress.value = true
 
-            dataRepository.searchBook(query = query, sort = null, page = page, size = 50)
-                .collect {
-                    _progress.value = it is Result.Progress
+            dataRepository.searchBook(query = query, sort = null, page = paging.page, size = 50)
+                .success {
+                    _error.value = false
 
-                    if (it is Result.Success) {
-                        val data = it.data!!
-                        if (data.documents.isNotEmpty())
-                            items.addAll(data.documents)
+                    if (paging.page == 1)
+                        items.clear()
 
-                        if (!data.meta.is_end) {
-                            acceptPage = requestPage
-                            requestPage = 0
-                        }
-                    } else if (it is Result.Error) {
-                        _error.value = true
-                        acceptQuery = null
-                    }
+                    if (it.documents.isNotEmpty())
+                        items.addAll(it.documents)
+
+                    paging.success(it.meta.is_end)
+                }.error { _, _ ->
+                    _error.value = true
+                    paging.error()
                 }
+
+            _progress.value = false
         }
     }
 
     fun loadMore() {
-        searchBook(query = query.value)
+        paging.load()
     }
 
     fun refresh() {
-        acceptPage = 0
-        requestPage = 0
-        searchBook(query = query.value)
+        paging.refresh()
     }
 
     fun isFavorite(view: View, isbn: String) {
         viewModelScope.launch {
-            dataRepository.isFavorite(isbn).collect {
-                if (it is Result.Success)
-                    view.isSelected = it.data == true
-            }
+            view.isSelected = dataRepository.isFavorite(isbn).data == true
+            delay(1000L)
         }
     }
+
 }

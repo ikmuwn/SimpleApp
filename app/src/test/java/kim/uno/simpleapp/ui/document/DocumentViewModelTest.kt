@@ -7,7 +7,6 @@ import kim.uno.simpleapp.data.DataRepository
 import kim.uno.simpleapp.data.Result
 import kim.uno.simpleapp.data.dto.Document
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -44,24 +43,16 @@ class DocumentViewModelTest {
 
     @Test
     fun `toggle favorite`() = runBlocking {
-        Mockito.`when`(
-            mockDataRepository.isFavorite(isbn = document.isbn)
-        ).thenReturn(flow {
-            emit(Result.Progress())
-            emit(Result.Success(true))
-        })
+        Mockito.`when`(mockDataRepository.isFavorite(isbn = document.isbn))
+            .thenReturn(Result.Success(true))
 
-        Mockito.`when`(
-            mockDataRepository.toggleFavorite(isbn = document.isbn)
-        ).thenReturn(flow {
-            emit(Result.Progress())
-            emit(Result.Success(true))
-        })
+        Mockito.`when`(mockDataRepository.toggleFavorite(isbn = document.isbn))
+            .thenReturn(Result.Success(true))
 
         documentViewModel = DocumentViewModel(mockDataRepository)
         documentViewModel.setup(document)
         documentViewModel.toggleFavorite()
-        documentViewModel.favorite.observeForever {  }
+        documentViewModel.favorite.observeForever { }
 
         Assert.assertEquals(documentViewModel.favorite.value, true)
     }

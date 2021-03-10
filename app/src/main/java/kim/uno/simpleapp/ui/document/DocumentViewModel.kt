@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kim.uno.simpleapp.data.DataRepository
-import kim.uno.simpleapp.data.Result
 import kim.uno.simpleapp.data.dto.Document
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,26 +26,18 @@ class DocumentViewModel @Inject constructor(private val dataRepository: DataRepo
 
     fun setup(document: Document) {
         item.value = document
-        invalidateFavorite()
-    }
-
-    private fun invalidateFavorite() {
         viewModelScope.launch {
-            dataRepository.isFavorite(item.value!!.isbn).collect {
-                _progress.value = it is Result.Progress
-                if (it is Result.Success)
-                    _favorite.value = it.data
-            }
+            _progress.value = true
+            _favorite.value = dataRepository.isFavorite(item.value!!.isbn).data == true
+            _progress.value = false
         }
     }
 
     fun toggleFavorite() {
         viewModelScope.launch {
-            dataRepository.toggleFavorite(item.value!!.isbn).collect {
-                _progress.value = it is Result.Progress
-                if (it is Result.Success)
-                    _favorite.value = it.data
-            }
+            _progress.value = true
+            _favorite.value = dataRepository.toggleFavorite(item.value!!.isbn).data == true
+            _progress.value = false
         }
     }
 

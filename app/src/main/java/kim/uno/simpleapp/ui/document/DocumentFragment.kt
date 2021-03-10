@@ -1,6 +1,5 @@
 package kim.uno.simpleapp.ui.document
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -10,7 +9,7 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kim.uno.simpleapp.databinding.DocumentFragmentBinding
 import kim.uno.simpleapp.ui.BaseFragment
-import kim.uno.simpleapp.util.GlideListener
+import kim.uno.simpleapp.util.finally
 
 @AndroidEntryPoint
 class DocumentFragment : BaseFragment() {
@@ -29,9 +28,10 @@ class DocumentFragment : BaseFragment() {
 
         Glide.with(requireContext())
             .load(document.thumbnail)
-            .listener(GlideListener<Drawable> {
+            .finally {
                 startPostponedEnterTransition()
-            })
+                false
+            }
             .into(binding.image)
 
         installTransition()

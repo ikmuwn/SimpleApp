@@ -7,7 +7,6 @@ import kim.uno.simpleapp.data.DataRepository
 import kim.uno.simpleapp.data.Result
 import kim.uno.simpleapp.data.dto.Search
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -51,15 +50,10 @@ class SearchViewModelTest {
                 page = 1,
                 size = 50
             )
-        ).thenReturn(flow {
-            emit(Result.Progress())
-            emit(Result.Success(search))
-        })
+        ).thenReturn(Result.Success(search))
 
         Mockito.`when`(mockDataRepository.clearFavorite())
-            .thenReturn(flow {
-                emit(Result.Success(true))
-            })
+            .thenReturn(Result.Success(true))
 
         searchViewModel = SearchViewModel(mockDataRepository)
         searchViewModel.searchBook(query = "test")

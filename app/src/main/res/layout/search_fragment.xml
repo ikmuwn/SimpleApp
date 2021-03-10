@@ -16,7 +16,7 @@
 
         <EditText
             android:id="@+id/search"
-            style="@style/TextAppearance.AppCompat.Medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:hint="@string/search_hint"

@@ -91,7 +91,7 @@
 
                         <TextView
                             android:id="@+id/title"
-                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                             textFuture="@{viewModel.item.title}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
 
                         <TextView
                             android:id="@+id/date"
-                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                             textFuture="@{viewModel.item.formattedDate}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
 
                     <TextView
                         android:id="@+id/price"
-                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         textFuture="@{viewModel.item.formattedPrice}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
 
                     <TextView
                         android:id="@+id/author"
-                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         textFuture="@{viewModel.item.author}"
                         visibleByText="@{viewModel.item.author}"
                         android:layout_width="match_parent"
@@ -125,7 +125,7 @@
 
                     <TextView
                         android:id="@+id/contents"
-                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         textFuture="@{viewModel.item.contents}"
                         visibleByText="@{viewModel.item.contents}"
                         android:layout_width="match_parent"

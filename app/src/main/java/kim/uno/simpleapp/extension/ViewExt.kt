@@ -15,6 +15,8 @@ import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.channels.actor
 
 fun View.snackbar(text: String, length: Int = Snackbar.LENGTH_LONG) {
     Snackbar.make(this, text, length).show()
@@ -97,7 +99,7 @@ fun AppCompatEditText.setTextFuture(text: String?) =
     )
 
 fun EditText.setOnEditorAction(unit: (EditText) -> Unit) {
-    setOnEditorActionListener{ textView, action, event ->
+    setOnEditorActionListener { textView, action, event ->
         if (action == imeOptions) {
             unit(this)
             true
