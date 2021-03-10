@@ -1,4 +1,4 @@
-package kim.uno.simpleapp.util
+package kim.uno.simpleapp.extension
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

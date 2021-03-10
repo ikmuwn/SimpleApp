@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kim.uno.simpleapp.databinding.DocumentFragmentBinding
 import kim.uno.simpleapp.ui.BaseFragment
-import kim.uno.simpleapp.util.finally
+import kim.uno.simpleapp.extension.finally
 
 @AndroidEntryPoint
 class DocumentFragment : BaseFragment() {

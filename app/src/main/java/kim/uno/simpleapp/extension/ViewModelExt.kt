@@ -1,4 +1,4 @@
-package kim.uno.simpleapp.util
+package kim.uno.simpleapp.extension
 
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableArrayList

@@ -9,10 +9,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kim.uno.simpleapp.R
 import kim.uno.simpleapp.databinding.SearchFragmentBinding
 import kim.uno.simpleapp.ui.BaseFragment
-import kim.uno.simpleapp.util.hideKeyboard
-import kim.uno.simpleapp.util.observe
-import kim.uno.simpleapp.util.setOnEditorAction
-import kim.uno.simpleapp.util.toast
+import kim.uno.simpleapp.extension.hideKeyboard
+import kim.uno.simpleapp.extension.observe
+import kim.uno.simpleapp.extension.setOnEditorAction
+import kim.uno.simpleapp.extension.toast
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment() {

@@ -1,4 +1,4 @@
-package kim.uno.simpleapp.util
+package kim.uno.simpleapp.extension
 
 import android.app.Service
 import android.content.Context
@@ -15,8 +15,6 @@ import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.channels.actor
 
 fun View.snackbar(text: String, length: Int = Snackbar.LENGTH_LONG) {
     Snackbar.make(this, text, length).show()

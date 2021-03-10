@@ -2,8 +2,8 @@ package kim.uno.simpleapp.data.local
 
 import kim.uno.simpleapp.SimpleApp
 import kim.uno.simpleapp.data.Result
-import kim.uno.simpleapp.util.commitPref
-import kim.uno.simpleapp.util.pref
+import kim.uno.simpleapp.extension.commitPref
+import kim.uno.simpleapp.extension.pref
 import javax.inject.Inject
 
 class LikeData @Inject constructor() {
