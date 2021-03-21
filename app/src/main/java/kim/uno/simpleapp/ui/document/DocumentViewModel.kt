@@ -28,7 +28,8 @@ class DocumentViewModel @Inject constructor(private val dataRepository: DataRepo
         item.value = document
         viewModelScope.launch {
             _progress.value = true
-            _favorite.value = dataRepository.isFavorite(item.value!!.isbn).data == true
+            val isFavorite = dataRepository.isFavorite(item.value!!.isbn).data
+            _favorite.value = isFavorite == true
             _progress.value = false
         }
     }
@@ -36,7 +37,8 @@ class DocumentViewModel @Inject constructor(private val dataRepository: DataRepo
     fun toggleFavorite() {
         viewModelScope.launch {
             _progress.value = true
-            _favorite.value = dataRepository.toggleFavorite(item.value!!.isbn).data == true
+            val isFavorite = dataRepository.toggleFavorite(item.value!!.isbn).data
+            _favorite.value = isFavorite == true
             _progress.value = false
         }
     }

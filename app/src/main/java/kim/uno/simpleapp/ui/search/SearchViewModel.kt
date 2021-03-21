@@ -4,11 +4,12 @@ import android.view.View
 import androidx.annotation.VisibleForTesting
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.*
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kim.uno.simpleapp.data.DataRepository
 import kim.uno.simpleapp.data.dto.Document
 import kim.uno.simpleapp.util.Paging
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
@@ -84,9 +85,14 @@ class SearchViewModel @Inject constructor(private val dataRepository: DataReposi
 
     fun isFavorite(view: View, isbn: String) {
         viewModelScope.launch {
-            view.isSelected = dataRepository.isFavorite(isbn).data == true
-            delay(1000L)
+            val isFavorite = dataRepository.isFavorite(isbn).data
+            view.isSelected = isFavorite == true
         }
+    }
+
+    fun documentDetail(view: View, item: Document, extras: FragmentNavigator.Extras) {
+        val direction = SearchFragmentDirections.documentDetail(item)
+        view.findNavController().navigate(direction, extras)
     }
 
 }

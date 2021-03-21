@@ -8,8 +8,9 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kim.uno.simpleapp.databinding.DocumentFragmentBinding
-import kim.uno.simpleapp.ui.BaseFragment
 import kim.uno.simpleapp.extension.finally
+import kim.uno.simpleapp.extension.setOnThrottleClickListener
+import kim.uno.simpleapp.ui.BaseFragment
 
 @AndroidEntryPoint
 class DocumentFragment : BaseFragment() {
@@ -24,7 +25,7 @@ class DocumentFragment : BaseFragment() {
         binding.viewModel = documentViewModel.apply { setup(document) }
         binding.lifecycleOwner = this
         binding.back.setOnClickListener { it.findNavController().popBackStack() }
-        binding.favorite.setOnClickListener { documentViewModel.toggleFavorite() }
+        binding.favorite.setOnThrottleClickListener { documentViewModel.toggleFavorite() }
 
         Glide.with(requireContext())
             .load(document.thumbnail)

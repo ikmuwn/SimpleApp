@@ -2,6 +2,7 @@ package kim.uno.simpleapp.extension
 
 import android.app.Service
 import android.content.Context
+import android.os.SystemClock
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -114,4 +115,28 @@ fun isSelected(view: View, isSelected: Boolean) {
 @BindingAdapter("isRefreshing")
 fun isRefreshing(view: SwipeRefreshLayout, isRefreshing: Boolean) {
     view.isRefreshing = isRefreshing
+}
+
+
+fun View.setOnThrottleClickListener(throttle: Long = 300L, action: (View) -> Unit) {
+    val throttleAction = ThrottleAction(this, throttle, action)
+    setOnClickListener { throttleAction.action() }
+}
+
+private class ThrottleAction(
+    private val view: View,
+    private val throttle: Long,
+    private val action: (View) -> Unit) {
+
+    private var lastActionTime = 0L
+
+    fun action() {
+        val now = SystemClock.elapsedRealtime()
+        val millisecondsPassed = now - lastActionTime
+        val actionAllowed = millisecondsPassed > throttle
+        lastActionTime = now
+
+        if (actionAllowed)
+            action.invoke(view)
+    }
 }

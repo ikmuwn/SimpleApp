@@ -8,11 +8,11 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kim.uno.simpleapp.R
 import kim.uno.simpleapp.databinding.SearchFragmentBinding
-import kim.uno.simpleapp.ui.BaseFragment
 import kim.uno.simpleapp.extension.hideKeyboard
 import kim.uno.simpleapp.extension.observe
 import kim.uno.simpleapp.extension.setOnEditorAction
 import kim.uno.simpleapp.extension.toast
+import kim.uno.simpleapp.ui.BaseFragment
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment() {
@@ -37,7 +37,8 @@ class SearchFragment : BaseFragment() {
             adapter = SearchAdapter(binder = {
                 if (it == binding.recyclerView.adapter!!.itemCount - 10)
                     searchViewModel.loadMore()
-            }, favorite = searchViewModel::isFavorite)
+            }, favorite = searchViewModel::isFavorite,
+            documentDetail = searchViewModel::documentDetail)
         }
 
         binding.search.apply {

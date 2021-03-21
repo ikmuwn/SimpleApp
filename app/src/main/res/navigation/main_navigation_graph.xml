@@ -18,9 +18,6 @@
             <argument
                 android:name="document"
                 app:argType="kim.uno.simpleapp.data.dto.Document" />
-            <argument
-                android:name="index"
-                app:argType="integer" />
         </action>
     </fragment>
 
@@ -32,9 +29,6 @@
         <argument
             android:name="document"
             app:argType="kim.uno.simpleapp.data.dto.Document" />
-        <argument
-            android:name="index"
-            app:argType="integer" />
     </fragment>
 
 </navigation>
